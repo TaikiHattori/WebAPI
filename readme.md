@@ -11,3 +11,4 @@ YoutubeiFramePlayerAPIの実装。.ipynbファイル内でPythonを使って、�
 Pythonを使って実装したこと。前回に比べ、自分自身での仮説・検証を繰り返す数が多かった。
 前回の反省で「挑戦する曜日は木曜、金曜」と決めたが、実際そうはいかなかった。走りながら、いい塩梅を見つける。
 # ブラウザURL
+https://taikihattori.github.io/WebAPI/WebAPI.html
