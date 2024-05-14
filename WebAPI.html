@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>API</title>
+
+    <!-- ↓PyScript -->
+    <!-- サプーの「alpha/pyscript」部分合ってる-->
+    <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+    <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+
+
+</head>
+
+<body>
+
+    <h1>YouTube iFrame Player API</h1>
+
+
+    <!-- ------------------------------ -->
+    <!-- py-script、py-replそれぞれ試したがうまくいかず -->
+    <!-- ------------------------------ -->
+
+
+    <!-- <py-script></py-script> -->
+    <!-- <py-repl></py-repl> -->
+
+
+    <!-- import js
+
+async def fetch_data():
+    key = "AIzaSyBc_5aH9Fw0sSDMCtja6iGc6mqhhspDg1A"
+    url = f"https://language.googleapis.com/v1/documents:analyzeSentiment?key={key}"
+    text = "何か創り出そうぜ。非常識の提案。"
+    header = {"Content-Type": "application/json"}
+    body = {
+        "document": {
+            "type": "PLAIN_TEXT",
+            "language": "JA",
+            "content": text
+        }
+    }
+    res = js.fetch(url, headers=header, json=body)
+    data = await res
+    return data
+
+async def main():
+    result = await fetch_data()
+    print(result)
+
+js.eval("""
+async function runPythonCode() {
+    const result = await main();
+    console.log(result);
+}
+runPythonCode();
+""") -->
+
+
+
+
+
+    <!-- ------------------------------------------ -->
+    <!-- ↓YouTubeiFrame PlayerAPI -->
+    <!-- ------------------------------------------ -->
+
+    <div id="player"></div>
+
+
+    <!-- 追加：処理結果を表示 -->
+    <div id="result"></div>
+
+
+    <script>
+
+        //  Pythonの処理結果を表示※うまく動いていない
+        document.getElementById("result").innerHTML = `<p>処理結果: ${result}</p>`;
+
+        // <scrip src="https://www.youtube.com/iframe_api"></scrip
+
+
+
+    // ※axiosライブラリ、const url = ~~のリクエスト送るurlもなし
+
+
+    // ↓スクリプトの読込み
+    // 追加：以下、YouTubeの埋め込みコード
+    let tag = document.createElement('script');
+
+    tag.src = "https://www.youtube.com/iframe_api";
+    let firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    // ↑スクリプトの読込み
+
+
+    // なぜかここvarじゃないと動画出らん
+    var player;
+    function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+    height: '431',
+    width: '400',
+    // ↑height: '400',width: '400',にするとなぜか動画出ない
+
+    videoId: '74FIsXlS0EQ',
+    // ↑ここで動画選択
+
+    events: {
+    'onReady': onPlayerReady
+    }
+    });
+    }
+
+
+
+
+    function onPlayerReady(event) {
+    event.target.setVolume(0);//自動再生必須条件「音量が0かミュート」
+    event.target.seekTo(32); // 30秒から再生開始
+    event.target.playVideo();
+    }
+
+
+    </script>
+<!-- youtubeiFramePlayerAPI -->
+
+    <!-- 追加：ブラウザを自動的に開く※反応してない -->
+    <script>
+        window.onload = function() {
+            window.open("result.html");
+        };
+    </script>
+
+</body>
+
+</html>

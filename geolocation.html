@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>位置情報取得&map表示</title>
+  <link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP" rel="stylesheet">
+  <style>
+    html,
+    body {
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+      font-family: "Noto Sans JP";
+    }
+
+    header {
+      height: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    main {
+      height: calc(100vh - 100px);
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>オリジナルマップ</h1>
+  </header>
+  <main>
+    <div id="map"></div>
+  </main>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://www.bing.com/api/maps/mapcontrol?mkt=ja-jp&key=Ai17SS5b8VSb4BcOm-e9GB358kycgHBrpl8DTlOmCawhTtb4v8A1nmZ9m_dA5Z1v"></script>
+
+<!-- ↑「API_KEY」に自分のkey番号を貼る -->
+<!-- --------------------------------------------------------- -->
+<!-- git hubあげるときにAPI_KEY消す -->
+<!-- --------------------------------------------------------------- -->
+
+
+<!-- 位置情報ではaxiosライブラリ、const url=~~のリクエスト送るurlもなし -->
+
+
+
+
+  <script>
+  // マップ情報格納用の変数
+  let map;
+
+
+// 位置情報とれたときの処理
+function getPositionSuccess(position){
+  // ↑位置情報取得成功すると関数の引数（今回はposition）に位置情報が入ってくる
+  console.log(position);
+  const lat=position.coords.latitude;
+  const lng = position.coords.longitude;
+  console.log(lat,lng);
+
+
+    map = new Microsoft.Maps.Map("#map", {
+      center: {
+        latitude: lat,
+        longitude: lng,
+      },
+      zoom: 15,
+    });
+  }
+
+// ↓center：どこに中央設定しますか
+
+// zoom: 地図開いた時点の縮尺 ※1=世界地図、20=近所
+
+
+// 変わる箇所は３つ
+// 1.(#map)⇒どこに地図表示
+// 2.lat,lngの値
+// 3.zoomの値
+
+// map=new Microsoft.Maps.Map("#map",{})のとこでエラーになることがある
+// それは上のjquery的なコードでmap = new Microsoft.Maps.Map("#map", {}) に読み込む
+// ⇒それがよみこまれる前に navigator.geolocation.getCurrentPosition(getPositionSuccess, getPositionError);が作動したというエラー
+
+
+
+
+// 位置情報とれなかったときの処理
+
+    function getPositionError(error) {
+      const errorMessages = [
+        "位置情報が許可されてません",
+        "現在位置を特定できません",
+        "位置情報を取得する前にタイムアウトになりました",
+      ];
+      alert("error: " + errorMessages[error.code - 1]);
+    }
+
+
+
+// ↓navigator.geolocation.getCurrentPosition使うときは、
+// 事前にその中身の成功パターン関数getPositionSuccessと失敗パターン関数getPositionError
+// を作っとかないかん
+
+
+
+// ※位置情報には、成功失敗にかかわらず実行する処理がない
+
+
+
+  window.onload = function () {
+    // ↑追加
+    navigator.geolocation.getCurrentPosition(
+      getPositionSuccess,
+      getPositionError
+    );
+  };
+
+
+
+
+  </script>
+</body>
+
+</html>
